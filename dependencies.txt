@@ -1,0 +1,3 @@
+google-gson
+postgres-jdbc-driver
+servlet-api
