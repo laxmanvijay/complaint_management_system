@@ -20,9 +20,7 @@ body,h1,h2,h3,h4,h5,h6 {font-family: "Raleway", Arial, Helvetica, sans-serif}
 </style>
 </head>
 <body>
-    <header style="height: 30%;background-color: black">
-        <h4 class="w3-text w3-white">Complaint Management System</h4>
-    </header>
+        <h5 class="w3-center w3-text w3-white w3-wide">COMPLAINT MANAGEMENT</h5>
     <div class="w3-card w3-margin">
         <h4>All Customers</h4>
     <table id="customers" class="display w3-table">
@@ -61,16 +59,18 @@ body,h1,h2,h3,h4,h5,h6 {font-family: "Raleway", Arial, Helvetica, sans-serif}
             
             </tbody>
         </table>
-        <div id="type_chart"></div>
+    </div>
+    <div class="w3-card w3-margin" id="type_chart"></div>
+    <div class="w3-card w3-margin">
+        <h3>Number of complaints each day</h3>
+        <div id="linechart"></div>
     </div>
 <script>
+    var AllComplaintsdata;
 $(document).ready( function () {
-var AllComplaintsdata,data2;
+
 $.get('getallcomplaints',function(data){
     AllComplaintsdata=data;
-    data2=data;
-    console.log(data2);
-})
 
 $('#customers').DataTable({
     ajax:{
@@ -138,7 +138,51 @@ function drawChart() {
 
     chart.draw(data, options);
 }
+
+google.charts.load('current', {'packages':['line']});
+    google.charts.setOnLoadCallback(drawChart2);
+    var out = new Array();
+    for(var i=0;i<AllComplaintsdata.length;i++){
+        out.push(AllComplaintsdata[i].timestamp.split(", ")[0]);
+    }
+    var obj={};
+    for(var i=0;i<out.length;i++){
+        if(out[i] in obj){
+            obj[out[i]]++;
+        }
+        else{
+            obj[out[i]]=1;
+        }
+    }
+    
+    console.log(out);
+    console.log(obj);
+    function drawChart2() {
+        var data =new google.visualization.DataTable();
+      data.addColumn('string','Day');
+      data.addColumn('number','Count');
+      var arr2=[];
+    for (const [key, value] of Object.entries(obj)) {
+        console.log(key,value)
+        var arr = [];
+        arr[0] = key;
+        arr[1] = value;
+        arr2.push(arr);
+    }
+    data.addRows(arr2);
+    console.log(data);
+      var options = {
+        title: 'Company Performance',
+        curveType: 'function',
+        legend: { position: 'bottom' }
+      };
+
+      var chart = new google.visualization.LineChart(document.getElementById('linechart'));
+
+      chart.draw(data, options);
+    }
+})
 });
-</script>
+  </script>
 </body>
 </html>

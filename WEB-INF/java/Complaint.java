@@ -55,7 +55,8 @@ public class Complaint extends HttpServlet{
             if(subscribed_id>0){
                 int complaint_id = complaintdtodao.insert(complaintdto);
                 if(complaintdtodao.insertIntoComplaintMap(subscribed_id,complaint_id)){
-                    out.println("ok");
+                    request.setAttribute("id",complaint_id);
+                    request.getRequestDispatcher("/Thankyou.jsp").forward(request,response);
                 }
                 else{
                     out.println("err");
