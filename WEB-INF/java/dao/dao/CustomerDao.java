@@ -8,5 +8,6 @@ public interface CustomerDao{
     int getSubscribedIdByUserId(int appId,int userId);
     boolean isAlreadyContainsEmail(String email);
     List<Customer> getAllCustomers();
+    List<Customer> getCustomerForTechnicians(String email);
 
 }

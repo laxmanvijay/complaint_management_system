@@ -194,4 +194,43 @@ public class ComplaintDtoDaoImpl implements ComplaintDtoDao{
             return 0;
         }
     }
+
+    @Override
+    public List<CombinedComplaintInfo> getComplaintsForTechnicians(String email) {
+        try{
+            String sql = "select complaint.complaint_id,complaint.complaint_type,complaint_description,"+
+                         "timestamp,customer.user_id,application_details.app_id,application_version.vers"+
+                          "ion,app_name,email from application_customer_complaint_junction join complaint on "+ 
+                         "complaint.complaint_id=application_customer_complaint_junction.complaint_id"+
+                         " join application_customer_junction on application_customer_junction.ac_id=app"+
+                         "lication_customer_complaint_junction.ac_id join application_version on applica"+
+                         "tion_version.appver_id=complaint.appver_id join application_details on applicat"+
+                         "ion_details.app_id=application_customer_junction.app_id join customer on custom"+
+                         "er.user_id=application_customer_junction.user_id join complaint_technician_junction"+
+                         " on complaint_technician_junction.complaint_id=complaint.complaint_id where complaint"+
+                         "_technician_junction.technician_id in (select technician_id from technician where email=? limit 1)";
+            PreparedStatement ps = con.prepareStatement(sql);
+            ps.setString(1, email);
+            ResultSet rs = ps.executeQuery();
+            List<CombinedComplaintInfo> ls = new ArrayList<CombinedComplaintInfo>();
+            while(rs.next()){
+                CombinedComplaintInfo cci = new CombinedComplaintInfo();
+                cci.complaint_id = rs.getInt("complaint_id");
+                cci.complaint_type = rs.getString("complaint_type");
+                cci.complaint_description = rs.getString("complaint_description");
+                cci.timestamp = rs.getTimestamp("timestamp");
+                cci.app_id = rs.getInt("app_id");
+                cci.version = rs.getInt("version");
+                cci.user_id = rs.getInt("user_id");
+                cci.app_name = rs.getString("app_name");
+                cci.email = rs.getString("email");
+                ls.add(cci);
+            }
+            return ls;
+        }
+        catch(Exception e){
+            e.printStackTrace();
+            return null;
+        }
+    }
 }

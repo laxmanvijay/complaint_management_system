@@ -65,17 +65,29 @@ body,h1,h2,h3,h4,h5,h6 {font-family: "Raleway", Arial, Helvetica, sans-serif}
         <h3>Number of complaints each day</h3>
         <div id="linechart"></div>
     </div>
+    <button onclick="logout()">logout</button>
+<script>
+function logout(){
+    console.log("click");
+    localStorage.removeItem("jwt");
+    location.href="signout";
+}
+</script>
 <script>
     var AllComplaintsdata;
 $(document).ready( function () {
-
-$.get('getallcomplaints',function(data){
+localStorage.setItem("jwt",'${jwt}');
+$.post('getallcomplaints',{'jwt':localStorage.getItem("jwt")},function(data){
     AllComplaintsdata=data;
 
 $('#customers').DataTable({
     ajax:{
         url:'getallcustomers',  
-        dataSrc:''
+        dataSrc:'',
+        type:'POST',
+        data:{
+            "jwt":localStorage.getItem("jwt")
+        }
         },
         columns: [
     { data: 'id' },
@@ -90,6 +102,10 @@ $('#customers').DataTable({
 $('#complaints').DataTable({
     ajax:{
         url:'getallcomplaints',
+        type:'POST',
+        data:{
+            'jwt':localStorage.getItem("jwt")
+        },
         dataSrc:''
     },
     columns: [

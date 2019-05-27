@@ -1,3 +1,6 @@
 google-gson
 postgres-jdbc-driver
 servlet-api
+mail
+activation
+jbcrypt

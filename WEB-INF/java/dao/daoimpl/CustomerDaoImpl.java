@@ -133,4 +133,38 @@ public class CustomerDaoImpl implements CustomerDao{
         return false;
     }
     }
+
+    @Override
+    public List<Customer> getCustomerForTechnicians(String email) {
+        try{
+        String sql = "select customer.user_id,customer.user_name,customer.email,customer"+
+                    ".phone,customer.dob,customer.country from customer join application_"+
+                    "customer_junction on application_customer_junction.user_id=customer."+
+                    "user_id join application_customer_complaint_junction on application_"+
+                    "customer_complaint_junction.ac_id=application_customer_junction.ac_id"+
+                    " join complaint_technician_junction on complaint_technician_junction."+
+                    "complaint_id=application_customer_complaint_junction.complaint_id join"+
+                    " technician on technician.technician_id=complaint_technician_junction."+
+                    "technician_id where technician.email=?";
+        PreparedStatement ps = con.prepareStatement(sql);
+        ps.setString(1, email);
+        ResultSet rs = ps.executeQuery();
+        List<Customer> ls = new ArrayList<>();
+        while(rs.next()){
+            Customer c = new Customer()
+                            .setId(rs.getInt("user_id"))
+                            .setName(rs.getString("user_name"))
+                            .setEmail(rs.getString("email"))
+                            .setPhone(rs.getString("phone"))
+                            .setDob(String.valueOf(rs.getDate("dob")))
+                            .setCountry(rs.getString("country"));
+            ls.add(c);
+        }
+        return ls;
+        }
+        catch(Exception e){
+            e.printStackTrace();
+            return null;
+        }
+    }
 }

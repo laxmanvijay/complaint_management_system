@@ -7,6 +7,7 @@
     <title>Application form</title>
 </head>
 <body>
+        <h5 class="w3-center w3-text w3-white w3-wide">COMPLAINT MANAGEMENT</h5>
     <form action="addapplication" method="post">
         <h3>Create an entry for an application</h3>
           <br>
