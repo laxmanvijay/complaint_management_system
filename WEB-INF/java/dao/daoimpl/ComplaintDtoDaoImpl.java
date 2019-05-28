@@ -99,33 +99,36 @@ public class ComplaintDtoDaoImpl implements ComplaintDtoDao{
         }
     }
 
-    public List<HashMap<String,String>> getComplaintsByComplaintType(String type){
+    public List<CombinedComplaintInfo> getComplaintsByComplaintType(String type){
         try{
             String sql="select complaint.complaint_id,complaint.complaint_type,"+
             "complaint.complaint_description,complaint.timestamp,application_version"+
             ".version,application_details.app_id,application_details.app_name,"+
-            "application_customer_junction.user_id from complaint join application_version"+
+            "application_customer_junction.user_id,email from complaint join application_version"+
             " on complaint.appver_id=application_version.appver_id join application_details"+
             " on application_details.app_id=application_version.app_id join application_custo"+
             "mer_complaint_junction on application_customer_complaint_junction.complaint_id=co"+
             "mplaint.complaint_id join application_customer_junction on application_customer_j"+
-            "unction.ac_id=application_customer_complaint_junction.ac_id where complaint_type=?";
+            "unction.ac_id=application_customer_complaint_junction.ac_id join customer on custom"+
+            "er.user_id=application_customer_junction.user_id where complaint_type=?";
 
             PreparedStatement ps = con.prepareStatement(sql);
             ps.setString(1, type);
             ResultSet rs = ps.executeQuery();
-            List<HashMap<String,String>> ls = new ArrayList<>();
+            List<CombinedComplaintInfo> ls = new ArrayList<>();
             while(rs.next()){
                 HashMap<String,String> hm = new HashMap<>();
-                hm.put("complaint_id",String.valueOf(rs.getInt("complaint_id")));
-                hm.put("complaint_type",rs.getString("complaint_type"));
-                hm.put("complaint_description",rs.getString("complaint_description"));
-                hm.put("timestamp",rs.getString("timestamp"));
-                hm.put("version",rs.getString("version"));
-                hm.put("user_id",String.valueOf(rs.getInt("user_id")));
-                hm.put("app_id",String.valueOf(rs.getInt("app_id")));
-                hm.put("app_name",rs.getString("app_name"));
-                ls.add(hm);
+                CombinedComplaintInfo cci = new CombinedComplaintInfo();
+                cci.complaint_id = rs.getInt("complaint_id");
+                cci.complaint_type = rs.getString("complaint_type");
+                cci.complaint_description = rs.getString("complaint_description");
+                cci.timestamp = rs.getTimestamp("timestamp");
+                cci.app_id = rs.getInt("app_id");
+                cci.version = rs.getInt("version");
+                cci.user_id = rs.getInt("user_id");
+                cci.app_name = rs.getString("app_name");
+                cci.email = rs.getString("email");
+            ls.add(cci);
             }
             return ls;
         }

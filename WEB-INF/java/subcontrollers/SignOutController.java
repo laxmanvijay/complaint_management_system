@@ -20,6 +20,7 @@ public class SignOutController extends HttpServlet{
         PrintWriter out = response.getWriter();
         HttpSession session=request.getSession(false);  
         session.invalidate();
+        request.setAttribute("signout",true);
         request.getRequestDispatcher("/index.jsp").forward(request,response);
     }
 }

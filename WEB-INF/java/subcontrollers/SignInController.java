@@ -29,6 +29,7 @@ public class SignInController extends HttpServlet{
         }
         else{
             session.setAttribute("name",email);
+            session.setAttribute("type",tdao.getTechnicianByEmail(email).specialization);
             tdao.setLastLoginToNow(email);
             try{
             Context ctx = new InitialContext();

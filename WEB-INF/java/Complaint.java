@@ -1,4 +1,6 @@
 import java.io.*;
+import java.util.List;
+
 import javax.servlet.*;
 import javax.servlet.http.*;
 import javax.servlet.annotation.*;
@@ -48,13 +50,17 @@ public class Complaint extends HttpServlet{
                             .setAppverId(appverId);
 
         ComplaintDtoDao complaintdtodao = new ComplaintDtoDaoImpl();
-        
+        TechnicianDao tdao = new TechniciandaoImpl();
         if(customerdao.insert(c)){
             int user_id = customerdao.getUserIdByEmail(email);
             int subscribed_id = customerdao.getSubscribedIdByUserId(user_id,appId);
             if(subscribed_id>0){
                 int complaint_id = complaintdtodao.insert(complaintdto);
                 if(complaintdtodao.insertIntoComplaintMap(subscribed_id,complaint_id)){
+                    List<Integer> ls = tdao.getTechnicianBySpecialization(type);
+                    ls.forEach(technician_id->{
+                        tdao.assignComplaintToTechnician(complaint_id, technician_id);
+                    });
                     request.setAttribute("id",complaint_id);
                     request.getRequestDispatcher("/Thankyou.jsp").forward(request,response);
                 }

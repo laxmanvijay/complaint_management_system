@@ -330,7 +330,8 @@ color: #2ecc71;
 }
           </style>
 <script>
-        $(document).on("blur", "#email", function() {
+  
+        $("#email").on("blur", function() {
               
             $.post("getappbyemail",{"email":$("#email").val()}, function(responseJson) {   
                 console.log(responseJson) 

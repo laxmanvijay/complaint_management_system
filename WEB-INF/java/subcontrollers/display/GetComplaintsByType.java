@@ -18,8 +18,8 @@ public class GetComplaintsByType extends HttpServlet{
         
         PrintWriter out = response.getWriter();
         ComplaintDtoDao complaintdao = new ComplaintDtoDaoImpl();
-
-        String json = new Gson().toJson(complaintdao.getComplaintsByComplaintType(request.getParameter("type")));
+        HttpSession session = request.getSession(false);
+        String json = new Gson().toJson(complaintdao.getComplaintsByComplaintType((String)session.getAttribute("type")));
 
         response.setContentType("application/json");
         response.setCharacterEncoding("UTF-8");

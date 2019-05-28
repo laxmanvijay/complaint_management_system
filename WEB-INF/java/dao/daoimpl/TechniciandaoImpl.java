@@ -129,4 +129,131 @@ public class TechniciandaoImpl implements TechnicianDao{
             return false;
         }
     }
+
+    public List<String> getAllTechnician(){
+        try{
+            String sql = "select technician_id,email from technician where role='technician'";
+            PreparedStatement ps = con.prepareStatement(sql);
+            ResultSet rs = ps.executeQuery();
+            List<String> ls = new ArrayList<>();
+            while(rs.next()){
+                ls.add(rs.getString("email"));
+            }
+            return ls;
+        }
+        catch(Exception e){
+            return null;
+        }
+    }
+
+    @Override
+    public int assignComplaintToTechnician(int complaint_id, int technician_id) {
+        try{
+        String sql = "insert into complaint_technician_junction(complaint_id,technician_id) values(?,?)";
+        String[] gencol = {"ct_id"};
+        PreparedStatement ps = con.prepareStatement(sql,gencol);
+        ps.setInt(1,complaint_id);
+        ps.setInt(2, technician_id);
+        int x = ps.executeUpdate();
+        if(x>0){
+            ResultSet rs = ps.getGeneratedKeys();
+            if(rs.next())
+            {
+                return rs.getInt("ct_id");
+            }
+            else{
+            return 0;
+            }
+        }
+        else{
+            return 0;
+        }
+    }
+        catch(Exception e){
+            e.printStackTrace();
+            return 0;
+        }
+    }
+
+
+    @Override
+    public int getComplaintForTechnician(String email) {
+        try {
+            String sql="select complaint_id from complaint join technician on technician.specialization=complaint.complaint_type where technician.email=? limit 1";
+            PreparedStatement ps = con.prepareStatement(sql);
+            ps.setString(1, email);
+            ResultSet rs = ps.executeQuery();
+            if(rs.next()){
+                return rs.getInt("complaint_id");
+            }
+            return 0;
+        } catch (Exception e) {
+            e.printStackTrace();
+         return 0;   
+        }
+    }
+    @Override
+    public Technician getTechnicianByEmail(String email) {
+        try {
+            String sql="select * from technician join technician_details on "+
+                      "technician.td_id=technician_details.td_id where email=? limit 1";
+            PreparedStatement ps = con.prepareStatement(sql);
+            ps.setString(1, email);
+            ResultSet rs = ps.executeQuery();
+            if(rs.next()){
+                Technician t = new Technician();
+                t.country = rs.getString("country");
+                t.email = rs.getString("email");
+                t.name = rs.getString("name");
+                t.specialization = rs.getString("specialization");
+                t.role = rs.getString("role");
+
+                return t;
+            }
+            return null;
+        } catch (Exception e) {
+            e.printStackTrace();
+         return null;   
+        }
+    }
+
+    @Override
+    public List<Integer> getTechnicianBySpecialization(String spl) {
+        try {
+            String sql = "select technician_id from technician where specialization=?";
+            PreparedStatement ps = con.prepareStatement(sql);
+            ps.setString(1, spl);
+            ResultSet rs = ps.executeQuery();
+            List<Integer> ls = new ArrayList<>();
+            while(rs.next()){
+                ls.add(rs.getInt("technician_id"));
+            }
+            return ls;
+        } catch (Exception e) {
+            e.printStackTrace();
+            return null;
+        }
+    }
+
+    @Override
+    public int getTechnicianBySpecializationAndMinimumNumberOfIssuesSolved(String spl) {
+        try {
+            String sql = "select technician.technician_id,min(count) from technician "+
+                         "join(select technician_id,count(technician_id) from complaint"+
+                         "_technician_junction group by technician_id) as foo on techni"+
+                         "cian.technician_id = foo.technician_id where technician.specialization=?"+
+                         " group by technician.technician_id";
+            
+            PreparedStatement ps = con.prepareStatement(sql);
+            ps.setString(1, spl);
+            ResultSet rs = ps.executeQuery();
+            if(rs.next()){
+                return rs.getInt("technician_id");
+            }
+            return 0;
+        } catch (Exception e) {
+            e.printStackTrace();
+            return 0;
+        }
+    }
 }
