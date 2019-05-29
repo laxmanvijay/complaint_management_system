@@ -57,7 +57,7 @@ public class Complaint extends HttpServlet{
             if(subscribed_id>0){
                 int complaint_id = complaintdtodao.insert(complaintdto);
                 if(complaintdtodao.insertIntoComplaintMap(subscribed_id,complaint_id)){
-                    List<Integer> ls = tdao.getTechnicianBySpecialization(type);
+                    List<Integer> ls = tdao.getTechnicianByApplicationId(applicationdao.getAppIdByName(application));
                     ls.forEach(technician_id->{
                         tdao.assignComplaintToTechnician(complaint_id, technician_id);
                     });

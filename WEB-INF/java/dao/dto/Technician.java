@@ -1,6 +1,7 @@
 package dao.dto;
 
 import java.sql.Date;
+import java.sql.Time;
 
 public class Technician{
     public String name;
@@ -13,6 +14,9 @@ public class Technician{
     public String role;
     public int salary;
     public String gender;
+    public int currently_working_application;
+    public Time shift_start_time;
+    public Time shift_end_time;
 
     public Technician setDob(String dob){
         Date d = Date.valueOf(dob);

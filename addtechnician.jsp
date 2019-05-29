@@ -38,6 +38,18 @@ body,h1,h2,h3,h4,h5,h6 {font-family: "Times New Roman", Arial, Helvetica, sans-s
                         <input class="input2" type="text" name="specialization" placeholder="specialization" required>
                     </div>
 
+                    <div class="wrap-input2 validate-input" data-validate="Specialization is required">
+                        <input class="input2" type="text" name="currently_working_application" placeholder="currently_working_application" required>
+                    </div>
+
+                    <div class="wrap-input2 validate-input" data-validate="Specialization is required">
+                        <input class="input2" type="time" name="shift_start_time" placeholder="shift start time" required>
+                    </div>
+
+                    <div class="wrap-input2 validate-input" data-validate="Specialization is required">
+                        <input class="input2" type="time" name="shift_end_time" placeholder="shift end time" required>
+                    </div>
+
                     <div class="wrap-input2 validate-input" data-validate = "role is required">
                         <input class="input2" type="text" id="role" name="role" placeholder="role" required>
                     </div>

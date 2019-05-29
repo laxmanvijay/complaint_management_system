@@ -17,6 +17,11 @@ body,h1,h2,h3,h4,h5,h6 {font-family: "Times New Roman", Arial, Helvetica, sans-s
 </style>
 </head>
 <body>
+    <script>
+    if(localStorage.getItem("jwt")!==null){
+        location.href='display.jsp'
+    }
+    </script>
         <h5 class="w3-center w3-text w3-white w3-wide">COMPLAINT MANAGEMENT</h5>
     <div id="form" class="bg-contact2" style="background-image: url('mountain.jpg');">
         <div class="container-contact2">

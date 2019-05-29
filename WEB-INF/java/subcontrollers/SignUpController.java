@@ -6,6 +6,8 @@ import javax.servlet.http.*;
 import javax.servlet.annotation.*;
 import java.util.*;
 import com.google.gson.*;
+import java.sql.Time;
+import java.time.*;
 
 import dao.daoimpl.*;
 import dao.dao.*;
@@ -19,6 +21,14 @@ public class SignUpController extends HttpServlet{
         PrintWriter out = response.getWriter();
         Technician t = new Technician();
         HttpSession session = request.getSession(false);
+        ApplicationDtoDao adao = new ApplicationDtoDaoImpl();
+        Instant instant = Instant.now();
+        LocalTime time = instant.atZone(ZoneOffset.UTC).toLocalTime();
+        int hour = instant.atZone(ZoneOffset.UTC).getHour();
+        LocalTime userstarttime = timelist.get(0).toLocalTime();
+        LocalTime userendtime = timelist.get(1).toLocalTime();
+        int x1 = time.compareTo(userstarttime);
+        int x2 = time.compareTo(userendtime);
         t.name = request.getParameter("name");
         t.email = request.getParameter("email");
         t.password = request.getParameter("password");
@@ -26,6 +36,10 @@ public class SignUpController extends HttpServlet{
         t.setDob(request.getParameter("dob"));
         t.phone = request.getParameter("phone");
         t.specialization = request.getParameter("specialization");
+        t.currently_working_application = adao.getAppIdByName(request.getParameter("currently_working_application"));
+        System.out.println(request.getParameter("shift_start_time"));
+        t.shift_start_time = Time.valueOf(request.getParameter("shift_start_time")+":00");
+        t.shift_end_time = Time.valueOf(request.getParameter("shift_end_time")+":00");
         t.role = request.getParameter("role");
         t.salary = Integer.parseInt(request.getParameter("salary"));
         t.gender = request.getParameter("gender");

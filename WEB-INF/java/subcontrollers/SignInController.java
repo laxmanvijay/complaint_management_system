@@ -1,12 +1,15 @@
 package subcontrollers;
 
 import java.io.*;
+import java.sql.Time;
+
 import javax.servlet.*;
 import javax.servlet.http.*;
 import javax.servlet.annotation.*;
 import java.util.*;
 import com.google.gson.*;
 import javax.naming.*;
+
 
 import dao.daoimpl.*;
 import dao.dao.*;
@@ -24,6 +27,8 @@ public class SignInController extends HttpServlet{
         String password = request.getParameter("password");
         TechnicianDao tdao = new TechniciandaoImpl();
         int x = tdao.verifyEmailAndPassword(email,password);
+        List<Time> timelist = tdao.getSessionStartAndEndTimeByEmail(email);
+        System.out.println(timelist);
         if(x<=0){
             out.println("email or password incorrect");
         }

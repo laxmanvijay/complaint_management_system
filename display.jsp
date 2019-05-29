@@ -76,7 +76,8 @@ function logout(){
 <script>
     var AllComplaintsdata;
 $(document).ready( function () {
-localStorage.setItem("jwt",'${jwt}');
+if(localStorage.getItem("jwt")===null)
+    localStorage.setItem("jwt",'${jwt}');
 $.post('getallcomplaints',{'jwt':localStorage.getItem("jwt")},function(data){
     AllComplaintsdata=data;
 
