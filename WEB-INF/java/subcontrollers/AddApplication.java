@@ -29,7 +29,7 @@ public class AddApplication extends HttpServlet{
             out.println("ok");
         }                    
         else{
-            out.println("err");
+            request.getRequestDispatcher("/error.jsp").forward(request,response);
         }   
         out.close();
     }

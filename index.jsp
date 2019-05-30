@@ -12,8 +12,11 @@
 <link rel="stylesheet" type="text/css" href="util.css">
 	<link rel="stylesheet" type="text/css" href="main.css">
 <style>
-body,h1,h2,h3,h4,h5,h6 {font-family: "Times New Roman", Arial, Helvetica, sans-serif}
+body,h1,h2,h3,h4,h5,h6,label {font-family: "Times New Roman", Arial, Helvetica, sans-serif}
 .myLink {display: none}
+select {
+  outline: none;
+}
 </style>
 </head>
 <body background="water.jpg">
@@ -197,42 +200,27 @@ body,h1,h2,h3,h4,h5,h6 {font-family: "Times New Roman", Arial, Helvetica, sans-s
                             <span class="contact2-form-title">
                                 Your Complaint
                             </span>
-        
-                            <div class="wrap-input2 validate-input" data-validate="Name is required">
-                                <input class="input2" type="text" name="name" placeholder="name">
-                            </div>
-        
+                            
+                            <label for="email">Email</label>
                             <div class="wrap-input2 validate-input" data-validate = "Valid email is required: ex@abc.xyz">
-                                <input class="input2" type="text" id="email"name="email" placeholder="email">
+                                <input class="input2" type="text" id="email"name="email">
                             </div>
-
-                            <div class="wrap-input2 validate-input" data-validate = "Valid phone number is required">
-                                    <input class="input2" type="number" name="phone" placeholder="phone">    
-                                </div>
-                                <div class="wrap-input2 validate-input" data-validate = "Valid dob is required">
-                                        <input class="input2" type="date" name="dob" placeholder="dob">
-                                    </div>
-                            <div class="wrap-input2 validate-input" data-validate = "Valid country is required">
-                                    <select name="country" id="country" class="input2" required placeholder="country">
-                                            <option value="India">India</option>
-                                            <option value="USA">USA</option>
-                                            <option value="China">China</option>
-                                            <option value="UK">UK</option>
-                                          </select>
-                                </div>
-                                
+                            
+                                <label for="app">Application Name</label>
                                 <div class="wrap-input2 validate-input" data-validate = "Valid app name is required">
-                                <select name="application" id="application" class="input2" required placeholder="application">
+                                <select name="application" id="application" class="input2" required>
           
                                     </select>
                         
                                 </div>
+                                <label for="version">Version</label>
                                 <div class="wrap-input2 validate-input" data-validate = "Valid version is required">
-                                    <select name="version" id="version" class="input2" required aria-placeholder="version">
+                                    <select name="version" id="version" class="input2" required>
           
                                     </select>
                                     
                                 </div>
+                                <label for="type">Type</label>
                                 <div class="wrap-input2 validate-input" data-validate = "Valid complaint type is required">
                                 <select name="type" id="type" class="input2 " required>
                                         <option value="Security">Security issues</option>
@@ -240,8 +228,9 @@ body,h1,h2,h3,h4,h5,h6 {font-family: "Times New Roman", Arial, Helvetica, sans-s
                                         <option value="feature">feature issues</option>
                                 </select>
                             </div>
+                            <label for="message">Message</label>
                             <div class="wrap-input2 validate-input" data-validate = "Message is required">
-                                <textarea class="input2" name="description" placeholder="message"></textarea>
+                                <textarea class="input2" name="description"></textarea>
                             </div>
     
                             <div class="container-contact2-form-btn">

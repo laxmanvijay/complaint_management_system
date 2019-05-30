@@ -48,7 +48,7 @@ public class GetAllCustomers extends HttpServlet{
     }
     catch(Exception e){
         e.printStackTrace();
-        out.println("error");
+        request.getRequestDispatcher("/error.jsp").forward(request,response);
     }
     }
 }

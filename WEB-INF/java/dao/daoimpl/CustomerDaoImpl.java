@@ -115,7 +115,7 @@ public class CustomerDaoImpl implements CustomerDao{
             return true;
         }
         try{
-        String sql = "insert into Customer(name,email,phone,dob,country) values(?,?,?,?,?)";
+        String sql = "insert into Customer(user_name,email,phone,dob,country) values(?,?,?,?,?)";
         PreparedStatement ps = con.prepareStatement(sql);
         ps.setString(1, c.getName());
         ps.setString(2, c.getEmail());

@@ -42,27 +42,10 @@ body,h1,h2,h3,h4,h5,h6 {font-family: "Raleway", Arial, Helvetica, sans-serif}
                 }
             })
         </script>
-        <div class="w3-sidebar w3-bar-block w3-collapse w3-card" style="width:200px;" id="mySidebar">
-                <button class="w3-bar-item w3-button w3-hide-large"
-                onclick="w3_close()">Close &times;</button>
-                <a href="signout" class="w3-bar-item w3-button" onclick="localStorage.removeItem('jwt')">SignOut</a>
-                <a href="addtechnician.jsp" class="w3-bar-item w3-button">AddTechnician</a>
-                <a href="applicationform.jsp" class="w3-bar-item w3-button">Add Application</a>
-              </div>
-              <div class="w3-main" style="margin-left:200px">
-              <script>
-                    function w3_open() {
-                      document.getElementById("mySidebar").style.display = "block";
-                    }
-                    
-                    function w3_close() {
-                      document.getElementById("mySidebar").style.display = "none";
-                    }
-                    </script>
         <h5 class="w3-center w3-text w3-white w3-wide">COMPLAINT MANAGEMENT</h5>
     <div class="w3-card w3-margin">
-        <h4>All Customers</h4>
-    <table id="customers" class="display w3-table">
+        <h4>All Technicians</h4>
+    <table id="technicians" class="display w3-table">
         <thead>
             <tr>
                 <th>id</th>
@@ -71,6 +54,8 @@ body,h1,h2,h3,h4,h5,h6 {font-family: "Raleway", Arial, Helvetica, sans-serif}
                 <th>phone</th>
                 <th>dob</th>
                 <th>country</th>
+                <th>Specialization</th>
+                <th>Gender</th>
             </tr>
         </thead>
         <tbody>
@@ -99,12 +84,24 @@ body,h1,h2,h3,h4,h5,h6 {font-family: "Raleway", Arial, Helvetica, sans-serif}
             </tbody>
         </table>
     </div>
-    <div class="w3-card w3-margin" id="type_chart"></div>
-    <div class="w3-card w3-margin">
-        <h3>Number of complaints each day</h3>
-        <div id="linechart"></div>
-    </div>
-    </div>
+    <form action="assigncomplaint" method="post">
+            <h3>Create an entry for an application</h3>
+              <br>
+              <div class="w3-half">
+                      <label>Complaint id</label>
+                      <input type="text" name="complaint_id" id="complaint_id">
+              </div>
+              <br>
+              <div class="w3-half">
+                <label>Technician id</label>
+                <input type="text" name="technician_id" id="technician_id">
+                </div>
+                <br>
+                <input type="hidden" name="jwt" id="jwt">
+              <input type="submit" value="submit" class="w3-button w3-dark-grey">
+          </form>
+    
+    <button onclick="logout()">logout</button>
 <script>
 function logout(){
     console.log("click");
@@ -115,14 +112,13 @@ function logout(){
 <script>
     var AllComplaintsdata;
 $(document).ready( function () {
-if(localStorage.getItem("jwt")===null)
-    localStorage.setItem("jwt",'${jwt}');
+    $("#jwt").val(localStorage.getItem("jwt"));
 $.post('getallcomplaints',{'jwt':localStorage.getItem("jwt")},function(data){
     AllComplaintsdata=data;
 
-$('#customers').DataTable({
+$('#technicians').DataTable({
     ajax:{
-        url:'getallcustomers',  
+        url:'getalltechnicians',  
         dataSrc:'',
         type:'POST',
         data:{
@@ -135,7 +131,9 @@ $('#customers').DataTable({
     { data: 'email' },
     { data: 'phone' },
     { data: 'dob' },
-    { data: 'country' }
+    { data: 'country' },
+    { data: 'specialization' },
+    { data: 'gender' }
 ]
 });
 
@@ -159,85 +157,7 @@ $('#complaints').DataTable({
     ]
 });
 
-    
-google.charts.load('current', {'packages':['corechart']});
-google.charts.setOnLoadCallback(drawChart);
-
-function drawChart() {
-    var security_count=0;
-    var UI_count=0;
-    var feature_count=0;
-    for(var i=0;i<AllComplaintsdata.length;i++){
-        var val=AllComplaintsdata[i].complaint_type;
-        if(val=='Security'){
-            security_count+=1;
-        }
-        else if(val=='UI'){
-            UI_count+=1;
-        }
-        else{
-            feature_count+=1;
-        }
-    }
-    var data = google.visualization.arrayToDataTable([
-    ['Type', 'Number of Complaints'],
-    ['Security',security_count ],
-    ['UI',  UI_count],
-    ['Feature',feature_count ]
-    ]);
-
-    var options = {
-    title: 'Number of complaints over various types'
-    };
-
-    var chart = new google.visualization.PieChart(document.getElementById('type_chart'));
-
-    chart.draw(data, options);
-}
-
-google.charts.load('current', {'packages':['line']});
-    google.charts.setOnLoadCallback(drawChart2);
-    var out = new Array();
-    for(var i=0;i<AllComplaintsdata.length;i++){
-        out.push(AllComplaintsdata[i].timestamp.split(", ")[0]);
-    }
-    var obj={};
-    for(var i=0;i<out.length;i++){
-        if(out[i] in obj){
-            obj[out[i]]++;
-        }
-        else{
-            obj[out[i]]=1;
-        }
-    }
-    
-    console.log(out);
-    console.log(obj);
-    function drawChart2() {
-        var data =new google.visualization.DataTable();
-      data.addColumn('string','Day');
-      data.addColumn('number','Count');
-      var arr2=[];
-    for (const [key, value] of Object.entries(obj)) {
-        console.log(key,value)
-        var arr = [];
-        arr[0] = key;
-        arr[1] = value;
-        arr2.push(arr);
-    }
-    data.addRows(arr2);
-    console.log(data);
-      var options = {
-        title: 'Company Performance',
-        curveType: 'function',
-        legend: { position: 'bottom' }
-      };
-
-      var chart = new google.visualization.LineChart(document.getElementById('linechart'));
-
-      chart.draw(data, options);
-    }
-})
+});
 });
   </script>
 </body>

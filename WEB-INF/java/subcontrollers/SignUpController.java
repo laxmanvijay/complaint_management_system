@@ -22,13 +22,13 @@ public class SignUpController extends HttpServlet{
         Technician t = new Technician();
         HttpSession session = request.getSession(false);
         ApplicationDtoDao adao = new ApplicationDtoDaoImpl();
-        Instant instant = Instant.now();
-        LocalTime time = instant.atZone(ZoneOffset.UTC).toLocalTime();
-        int hour = instant.atZone(ZoneOffset.UTC).getHour();
-        LocalTime userstarttime = timelist.get(0).toLocalTime();
-        LocalTime userendtime = timelist.get(1).toLocalTime();
-        int x1 = time.compareTo(userstarttime);
-        int x2 = time.compareTo(userendtime);
+        // Instant instant = Instant.now();
+        // LocalTime time = instant.atZone(ZoneOffset.UTC).toLocalTime();
+        // int hour = instant.atZone(ZoneOffset.UTC).getHour();
+        // LocalTime userstarttime = timelist.get(0).toLocalTime();
+        // LocalTime userendtime = timelist.get(1).toLocalTime();
+        // int x1 = time.compareTo(userstarttime);
+        // int x2 = time.compareTo(userendtime);
         t.name = request.getParameter("name");
         t.email = request.getParameter("email");
         t.password = request.getParameter("password");
@@ -50,14 +50,17 @@ public class SignUpController extends HttpServlet{
         if(tdao.checkIsAdmin(admin_user) && tdao.verifyEmailAndPassword(admin_user, admin_password)>0){
         int x=tdao.insert(t);
         if(x==0){
-            out.println("email already registered");
+            request.setAttribute("error",1);
+            request.getRequestDispatcher("/addtechnician.jsp").forward(request,response);
         }
         else{
-            out.println("success,the technician id is: "+x);
+            request.setAttribute("success",x);
+            request.getRequestDispatcher("/addtechnician.jsp").forward(request,response);
         }
         }
         else{
-            out.println("you dont have permission to add a employee");
+            request.setAttribute("error",1);
+            request.getRequestDispatcher("/addtechnician.jsp").forward(request,response);
         }
         out.close();
     }

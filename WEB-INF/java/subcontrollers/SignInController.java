@@ -27,10 +27,10 @@ public class SignInController extends HttpServlet{
         String password = request.getParameter("password");
         TechnicianDao tdao = new TechniciandaoImpl();
         int x = tdao.verifyEmailAndPassword(email,password);
-        List<Time> timelist = tdao.getSessionStartAndEndTimeByEmail(email);
-        System.out.println(timelist);
+        
         if(x<=0){
-            out.println("email or password incorrect");
+            request.setAttribute("var",1);
+            request.getRequestDispatcher("/signin.jsp").forward(request,response);
         }
         else{
             session.setAttribute("name",email);
@@ -45,7 +45,7 @@ public class SignInController extends HttpServlet{
             }
             catch(Exception e){
                 e.printStackTrace();
-                out.println("error");
+                request.getRequestDispatcher("/error.jsp").forward(request,response);
             }
         }
         out.close();

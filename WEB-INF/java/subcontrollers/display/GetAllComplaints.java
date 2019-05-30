@@ -30,17 +30,18 @@ public class GetAllComplaints extends HttpServlet{
         String decrypt = AESController.decrypt(jwt,key);
         String email = new String(decrypt).split(" ")[0];
         String password = new String(decrypt).split(" ")[1]; // value stored in email+" "+password
+        Gson gson =new Gson();
         if(tdao.verifyEmailAndPassword(email, password)>0)
             {
             if(tdao.checkIsAdmin(email)){
-                json = new Gson().toJson(complaintdao.getAllComplaints());
+                json = gson.toJson(complaintdao.getAllComplaints());
             }
             else{
-                json = new Gson().toJson(complaintdao.getComplaintsByComplaintType((String)session.getAttribute("type")));
+                json = gson.toJson(complaintdao.getComplaintsByComplaintType((String)session.getAttribute("type")));
             }
         }
         else{
-            json = new Gson().toJson(new CombinedComplaintInfo());
+            json = gson.toJson(new CombinedComplaintInfo());
         }
         response.setContentType("application/json");
         response.setCharacterEncoding("UTF-8");
@@ -48,7 +49,7 @@ public class GetAllComplaints extends HttpServlet{
     }
     catch(Exception e){
         e.printStackTrace();
-        out.println("error");
+        request.getRequestDispatcher("/error.jsp").forward(request,response);
     }
     }
 }

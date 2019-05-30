@@ -23,21 +23,11 @@ public class Complaint extends HttpServlet{
         
         PrintWriter out=response.getWriter();
         response.setContentType("text/html");
-        String name = request.getParameter("name");
-        String phone = request.getParameter("phone");
-        String dob = request.getParameter("dob");
-        String country = request.getParameter("country");
         String application = request.getParameter("application");
         String version = request.getParameter("version");
         String type = request.getParameter("type");
         String description = request.getParameter("description");
         String email=request.getParameter("email");
-        Customer c = new Customer()
-                        .setName(name)
-                        .setCountry(country)
-                        .setDob(dob)
-                        .setEmail(email)
-                        .setPhone(phone);
         CustomerDao customerdao = new CustomerDaoImpl();
         
         ApplicationDtoDao applicationdao = new ApplicationDtoDaoImpl();
@@ -51,7 +41,6 @@ public class Complaint extends HttpServlet{
 
         ComplaintDtoDao complaintdtodao = new ComplaintDtoDaoImpl();
         TechnicianDao tdao = new TechniciandaoImpl();
-        if(customerdao.insert(c)){
             int user_id = customerdao.getUserIdByEmail(email);
             int subscribed_id = customerdao.getSubscribedIdByUserId(user_id,appId);
             if(subscribed_id>0){
@@ -70,12 +59,6 @@ public class Complaint extends HttpServlet{
             }else{
                 out.println("you can't provide complaint about this because you haven't subscribed!");
             }
-
-        System.out.println(name+phone);
-        }
-        else{
-            out.println("err");
-        }
         out.close();
     }
 }

@@ -16,4 +16,5 @@ public interface TechnicianDao{
     public int getTechnicianBySpecializationAndMinimumNumberOfIssuesSolved(String spl);
     public List<Integer> getTechnicianByApplicationId(int app);
     public List<Time> getSessionStartAndEndTimeByEmail(String email);
+    public List<Technician> getAllTechnicians();
 }

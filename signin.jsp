@@ -8,7 +8,9 @@
     <link rel="stylesheet" href="https://www.w3schools.com/w3css/4/w3.css">
 <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Raleway">
 <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
+<link rel="stylesheet" href="//cdnjs.cloudflare.com/ajax/libs/toastr.js/latest/toastr.min.css"></link>
 <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.4.0/jquery.min.js"></script>
+<script src="//cdnjs.cloudflare.com/ajax/libs/toastr.js/latest/toastr.min.js"></script>
 <link rel="stylesheet" type="text/css" href="util.css">
 	<link rel="stylesheet" type="text/css" href="main.css">
 <style>
@@ -19,9 +21,25 @@ body,h1,h2,h3,h4,h5,h6 {font-family: "Times New Roman", Arial, Helvetica, sans-s
 <body>
     <script>
     if(localStorage.getItem("jwt")!==null){
-        location.href='display.jsp'
+        $.ajax({
+            url:'verifyemailandpassword',
+                    type:'POST',
+                    data:{
+                        'jwt':localStorage.getItem("jwt")
+                    },
+                    success:function(data){
+                        if(data=='1'){
+                            location.href='display.jsp'
+                        }
+                    }
+                })
     }
     </script>
+    <% if (request.getAttribute("var")!=null) { %>
+        <script>
+        toastr.error("Incorrect Username or password")
+        </script>
+        <% } %>
         <h5 class="w3-center w3-text w3-white w3-wide">COMPLAINT MANAGEMENT</h5>
     <div id="form" class="bg-contact2" style="background-image: url('mountain.jpg');">
         <div class="container-contact2">

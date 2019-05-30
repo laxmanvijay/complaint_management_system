@@ -281,4 +281,32 @@ public class TechniciandaoImpl implements TechnicianDao {
             return null;
         }
     }
+
+    public List<Technician> getAllTechnicians(){
+        try {
+            String sql = "select * from technician join technician_details on technician.td_id=technician_details.td_id";
+            PreparedStatement ps = con.prepareStatement(sql);
+            ResultSet rs = ps.executeQuery();
+            List<Technician> ls = new ArrayList<>();
+            while(rs.next()){
+                Technician t = new Technician();
+                t.country = rs.getString("country");
+                t.currently_working_application = rs.getInt("currently_working_application");
+                t.dob = rs.getDate("dob");
+                t.email = rs.getString("email");
+                t.id = rs.getInt("technician_id");
+                t.gender = rs.getString("gender");
+                t.name = rs.getString("name");
+                t.phone = rs.getString("phone");
+                t.role = rs.getString("role");
+                t.salary = rs.getInt("salary");
+                t.specialization = rs.getString("specialization");
+                ls.add(t);
+            }
+            return ls;
+        } catch (Exception e) {
+            e.printStackTrace();
+            return null;
+        }
+    }
 }
