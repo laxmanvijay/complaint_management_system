@@ -146,7 +146,22 @@ public class AssignApplication extends HttpServlet{
         return ls;
     }
 
-    private List<String[]> getComplaintHandlingHours(int number_of_technicians) {
+    private List<String[]> getComplaintHandlingHours(int number_of_technicians){
+        if(number_of_technicians<=8){
+            return complaintHandlingHoursCalc(number_of_technicians);
+        }
+        else{
+            List<String[]> ls = complaintHandlingHoursCalc(8);
+            float multiplies = number_of_technicians/8;
+            float extra = number_of_technicians-(multiplies*8);
+            for(int i=0;i<(multiplies-1)*8+extra;i++){ 
+                ls.add(ls.get(i));
+            }
+            return ls;
+        }
+    }
+
+    private List<String[]> complaintHandlingHoursCalc(int number_of_technicians) {
         float hour_gap = 24/number_of_technicians;
         float temp=0;
         List<String[]> ls = new ArrayList<>();
