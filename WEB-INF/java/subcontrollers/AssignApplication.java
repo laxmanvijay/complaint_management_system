@@ -24,9 +24,10 @@ public class AssignApplication extends HttpServlet{
         String json;
         if(technician_id_array.size()<3){
             json = new Gson().toJson("error occurred");
-            response.setContentType("application/json");
+            response.setContentType("application/html");
         response.setCharacterEncoding("UTF-8");
-        response.getWriter().write(json);
+        request.setAttribute("error",1);
+        request.getRequestDispatcher("/displaytechnicians.jsp").forward(request,response);
         }
         else{
             TechnicianDao tdao = new TechniciandaoImpl();
@@ -67,22 +68,23 @@ public class AssignApplication extends HttpServlet{
                 i++;
                 }
                 if(x>0){
-                json = new Gson().toJson("assigned!");
+                json = "assigned";
                 }
                 else{
-                    json = new Gson().toJson("error occurred");
+                    json = "error";
                 }
             }
             else{
-                json = new Gson().toJson("oops, you are not an admin :-(");
+                json = "notadmin";
             }
         }
         else{
-            json = new Gson().toJson("oops, It seems your username and password is incorrect :-(");
+            json = new Gson().toJson("incorrectpassword");
         }
-        response.setContentType("application/json");
+        response.setContentType("application/html");
         response.setCharacterEncoding("UTF-8");
-        response.getWriter().write(json);
+        request.setAttribute(json,1);
+        request.getRequestDispatcher("/displaytechnicians.jsp").forward(request,response);
     }
     catch(Exception e){
         e.printStackTrace();
@@ -160,8 +162,14 @@ public class AssignApplication extends HttpServlet{
 
     private static String convertDecimalToTime(float temp) {
         int hour = (int)temp;
+        String s;
+        if(hour==24){
+            s = String.valueOf(23)+":"+String.valueOf((int)59)+":59";
+        }
+        else{
         float min = (temp-hour)*60;
-        String s = String.valueOf(hour)+":"+String.valueOf((int)min)+":0";
+        s = String.valueOf(hour)+":"+String.valueOf((int)min)+":0";
+        }
         return s;
     }
 }

@@ -14,12 +14,29 @@
 <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.4.0/jquery.min.js"></script>
 <script src="//cdn.datatables.net/1.10.19/js/jquery.dataTables.min.js"></script>
 <script type="text/javascript" src="https://www.gstatic.com/charts/loader.js"></script>
+<link rel="stylesheet" href="//cdnjs.cloudflare.com/ajax/libs/toastr.js/latest/toastr.min.css"></link>
+<script src="//cdnjs.cloudflare.com/ajax/libs/toastr.js/latest/toastr.min.js"></script>
 <style>
 body,h1,h2,h3,h4,h5,h6 {font-family: "Raleway", Arial, Helvetica, sans-serif}
 .myLink {display: none}
 </style>
 </head>
 <body>
+        <% if (request.getAttribute("error")!=null) { %>
+            <script>
+            toastr.error("Error occurred! Please try to enter 3 technicians and try again")
+            </script>
+            <% } %>
+            <% if (request.getAttribute("assigned")!=null) { %>
+              <script>
+              toastr.success("Success, assigned the technicians")
+              </script>
+              <% } %>
+              <% if (request.getAttribute("notadmin")!=null) { %>
+                <script>
+                toastr.info("You are not an admin")
+                </script>
+                <% } %>
         <script>
             $(document).ready(function(){
                 if(localStorage.getItem("jwt")===null){
