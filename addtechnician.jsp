@@ -69,10 +69,6 @@ body,h1,h2,h3,h4,h5,h6,label {font-family: "Times New Roman", Arial, Helvetica, 
                     <div class="wrap-input2 validate-input" data-validate="Specialization is required">
                         <input class="input2" type="text" name="specialization" required>
                     </div>
-                    <label for="currently_working_application">Currently working application</label>
-                    <div class="wrap-input2 validate-input" data-validate="Specialization is required">
-                        <input class="input2" type="text" name="currently_working_application" required>
-                    </div>
 
                     <div class="wrap-input2 validate-input" data-validate="Specialization is required">
                         <input class="input2" type="time" name="shift_start_time" placeholder="shift start time" required>

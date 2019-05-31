@@ -84,17 +84,18 @@ body,h1,h2,h3,h4,h5,h6 {font-family: "Raleway", Arial, Helvetica, sans-serif}
             </tbody>
         </table>
     </div>
-    <form action="assigncomplaint" method="post">
+    <form action="assignapplication" method="post">
             <h3>Create an entry for an application</h3>
               <br>
               <div class="w3-half">
-                      <label>Complaint id</label>
-                      <input type="text" name="complaint_id" id="complaint_id">
+                      <label>Application id</label>
+                      <input type="text" name="app_id" id="app_id" required>
               </div>
               <br>
               <div class="w3-half">
                 <label>Technician id</label>
-                <input type="text" name="technician_id" id="technician_id">
+                <p>Provide multiple technicians by seperating with commas</p>
+                <input type="text" name="technician_id" id="technician_id" required>
                 </div>
                 <br>
                 <input type="hidden" name="jwt" id="jwt">
@@ -103,6 +104,7 @@ body,h1,h2,h3,h4,h5,h6 {font-family: "Raleway", Arial, Helvetica, sans-serif}
     
     <button onclick="logout()">logout</button>
 <script>
+
 function logout(){
     console.log("click");
     localStorage.removeItem("jwt");

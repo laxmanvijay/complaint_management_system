@@ -32,7 +32,7 @@ public class TechniciandaoImpl implements TechnicianDao {
             if (ps.executeUpdate() > 0) {
                 ResultSet rs = ps.getGeneratedKeys();
                 if (rs.next()) {
-                    sql = "insert into technician(email,password,role,email_verification,specialization,last_login_time,td_id,currently_working_application,shift_start_time,shift_end_time) values(?,?,?,?,?,?,?,?,?,?)";
+                    sql = "insert into technician(email,password,role,email_verification,specialization,last_login_time,td_id,shift_start_time,shift_end_time) values(?,?,?,?,?,?,?,?,?)";
                     String gencol2[] = { "technician_id" };
                     PreparedStatement ps2 = con.prepareStatement(sql, gencol2);
                     ps2.setString(1, t.email);
@@ -42,7 +42,6 @@ public class TechniciandaoImpl implements TechnicianDao {
                     ps2.setString(5, t.specialization);
                     ps2.setNull(6, Types.TIMESTAMP);
                     ps2.setInt(7, rs.getInt("td_id"));
-                    ps2.setInt(8, t.currently_working_application);
                     ps2.setTime(9, t.shift_start_time);
                     ps2.setTime(10, t.shift_end_time);
                     if (ps2.executeUpdate() > 0) {
@@ -307,6 +306,121 @@ public class TechniciandaoImpl implements TechnicianDao {
         } catch (Exception e) {
             e.printStackTrace();
             return null;
+        }
+    }
+
+    @Override
+    public Technician getTechnicianById(int id) {
+        try {
+            String sql = "select * from technician join technician_details on technician.td_id=technician_details.td_id where technician_id=? limit 1";
+            PreparedStatement ps = con.prepareStatement(sql);
+            ps.setInt(1, id);
+            ResultSet rs = ps.executeQuery();
+            Technician t = new Technician();
+            if(rs.next()){
+                t.country = rs.getString("country");
+                t.currently_working_application = rs.getInt("currently_working_application");
+                t.dob = rs.getDate("dob");
+                t.email = rs.getString("email");
+                t.id = rs.getInt("technician_id");
+                t.gender = rs.getString("gender");
+                t.name = rs.getString("name");
+                t.phone = rs.getString("phone");
+                t.role = rs.getString("role");
+                t.salary = rs.getInt("salary");
+                t.specialization = rs.getString("specialization");
+            }
+            return t;
+        } catch (Exception e) {
+            e.printStackTrace();
+            return null;
+        }
+        
+    }
+
+    @Override
+    public boolean setSessionStartAndEndTimeByEmail(Time start, Time end,int id) {
+        try {
+            String sql = "update technician set shift_start_time=?,shift_end_time=? where technician_id=?";
+            PreparedStatement ps = con.prepareStatement(sql);
+            ps.setTime(1,start);
+            ps.setTime(2,end);
+            ps.setInt(3,id);
+            int x = ps.executeUpdate();
+            if(x>0){
+                return true;
+            }
+            else{
+                return false;
+            }
+        } catch (Exception e) {
+           e.printStackTrace();
+           return false;
+        }
+    }
+
+    @Override
+    public int assignApplicationToTechnician(int app_id, int technician_id) {
+        try {
+            String sql = "update technician set currently_working_application=? where technician_id=?";
+            String[] gencol = { "technician_id" };
+            PreparedStatement ps = con.prepareStatement(sql, gencol);
+            ps.setInt(1, app_id);
+            ps.setInt(2, technician_id);
+            int x = ps.executeUpdate();
+            if (x > 0) {
+                ResultSet rs = ps.getGeneratedKeys();
+                if (rs.next()) {
+                    return rs.getInt("technician_id");
+                } else {
+                    return 0;
+                }
+            } else {
+                return 0;
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
+            return 0;
+        }
+    }
+
+    @Override
+    public List<Time> getComplaintHandlingStartAndEndTimeById(int id) {
+        try {
+            String sql = "select complaint_handling_time_start,complaint_handling_time_end from technician where technician_id=?";
+            PreparedStatement ps = con.prepareStatement(sql);
+            ps.setInt(1, id);
+            ResultSet rs = ps.executeQuery();
+            List<Time> ls = new ArrayList<>();
+            while(rs.next()){
+                ls.add(rs.getTime("complaint_handling_time_start"));
+                ls.add(rs.getTime("complaint_handling_time_end"));
+            }
+            return ls;
+        } catch (Exception e) {
+            e.printStackTrace();
+            return null;
+        }
+    }
+
+    @Override
+    public boolean setComplaintHandlingStartAndEndTimeByEmail(Time start, Time end, int id) {
+        try {
+            String sql = "update technician set complaint_handling_time_start=?,complaint_handling_time_end=? where technician_id=?";
+            PreparedStatement ps = con.prepareStatement(sql);
+            ps.setTime(1,start);
+            ps.setTime(2,end);
+            ps.setInt(3,id);
+            int x = ps.executeUpdate();
+            if(x>0){
+                return true;
+            }
+            else{
+                return false;
+            }
+        } catch (Exception e) {
+           e.printStackTrace();
+           return false;
         }
     }
 }

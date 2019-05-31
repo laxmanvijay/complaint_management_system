@@ -232,7 +232,7 @@ select {
                             <div class="wrap-input2 validate-input" data-validate = "Message is required">
                                 <textarea class="input2" name="description"></textarea>
                             </div>
-    
+                            
                             <div class="container-contact2-form-btn">
                                 <div class="wrap-contact2-form-btn">
                                     <div class="contact2-form-bgbtn"></div>
@@ -318,6 +318,7 @@ select {
 color: #2ecc71;		
 }
           </style>
+          
 <script>
   
         $("#email").on("blur", function() {

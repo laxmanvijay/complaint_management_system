@@ -20,12 +20,12 @@ body,h1,h2,h3,h4,h5,h6 {font-family: "Raleway", Arial, Helvetica, sans-serif}
 </head>
 <body>
         <h5 class="w3-center w3-text w3-white w3-wide">COMPLAINT MANAGEMENT</h5>
-    <form action="assigncomplaint" method="post">
+    <form action="assignapplication" method="post">
         <h3>Create an entry for an application</h3>
           <br>
           <div class="w3-half">
-                  <label>Complaint id</label>
-                  <input type="text" name="complaint_id" id="complaint_id">
+                  <label>Application id</label>
+                  <input type="text" name="app_id" id="complaint_id">
           </div>
           <br>
           <div class="w3-half">

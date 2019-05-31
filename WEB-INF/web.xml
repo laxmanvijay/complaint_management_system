@@ -15,6 +15,10 @@
       <error-code>405</error-code>
       <location>/error</location>
    </error-page>
+   <error-page>
+      <error-code>500</error-code>
+      <location>/error</location>
+   </error-page>
    <!-- Exception Type Related Error Pages -->
    <error-page>
       <exception-type>javax.servlet.ServletException</exception-type>
