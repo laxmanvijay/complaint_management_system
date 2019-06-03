@@ -4,3 +4,13 @@ servlet-api
 mail
 activation
 jbcrypt
+jasperreports
+jasperreports-javaflow
+commons-javaflow
+commons-beanutils
+commons-collections
+commons-logging
+commons-digester
+iText
+iText-Asian
+com.lowagie.text-2.1.7

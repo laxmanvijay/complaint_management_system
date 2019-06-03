@@ -59,6 +59,16 @@ body,h1,h2,h3,h4,h5,h6 {font-family: "Raleway", Arial, Helvetica, sans-serif}
                 }
             })
         </script>
+        <div class="w3-sidebar w3-bar-block w3-collapse w3-card" style="width:200px;" id="mySidebar">
+            <button class="w3-bar-item w3-button w3-hide-large"
+            onclick="w3_close()">Close &times;</button>
+            <a href="signout" class="w3-bar-item w3-button" onclick="localStorage.removeItem('jwt');location.href='signout'">SignOut</a>
+            <a href="addtechnician.jsp" class="w3-bar-item w3-button">AddTechnician</a>
+            <a href="applicationform.jsp" class="w3-bar-item w3-button">Add Application</a>
+            <a href="generatepdf?data=technician" class="w3-bar-item w3-button">generate pdf</a>
+             <a href="generatecsv?data=technician" class="w3-bar-item w3-button">generate csv</a>
+          </div>
+          <div class="w3-main" style="margin-left:200px">
         <h5 class="w3-center w3-text w3-white w3-wide">COMPLAINT MANAGEMENT</h5>
     <div class="w3-card w3-margin">
         <h4>All Technicians</h4>
@@ -73,6 +83,10 @@ body,h1,h2,h3,h4,h5,h6 {font-family: "Raleway", Arial, Helvetica, sans-serif}
                 <th>country</th>
                 <th>Specialization</th>
                 <th>Gender</th>
+                <th>Shift Start</th>
+                <th>Shift End</th>
+                <th>Complaint Handling Start</th>
+                <th>Complaint Handling End</th>
             </tr>
         </thead>
         <tbody>
@@ -94,6 +108,7 @@ body,h1,h2,h3,h4,h5,h6 {font-family: "Raleway", Arial, Helvetica, sans-serif}
                     <th>App Name</th>
                     <th>App Version</th>
                     <th>User Email</th>
+                   
                 </tr>
             </thead>
             <tbody>
@@ -118,8 +133,8 @@ body,h1,h2,h3,h4,h5,h6 {font-family: "Raleway", Arial, Helvetica, sans-serif}
                 <input type="hidden" name="jwt" id="jwt">
               <input type="submit" value="submit" class="w3-button w3-dark-grey">
           </form>
-    
-    <button onclick="logout()">logout</button>
+   
+    </div>
 <script>
 
 function logout(){
@@ -136,6 +151,7 @@ $.post('getallcomplaints',{'jwt':localStorage.getItem("jwt")},function(data){
     AllComplaintsdata=data;
 
 $('#technicians').DataTable({
+    scrollX:true,
     ajax:{
         url:'getalltechnicians',  
         dataSrc:'',
@@ -152,11 +168,16 @@ $('#technicians').DataTable({
     { data: 'dob' },
     { data: 'country' },
     { data: 'specialization' },
-    { data: 'gender' }
+    { data: 'gender' },
+    { data: 'shift_start_time' },
+    { data: 'shift_end_time' },
+    { data: 'complaint_handling_time_start' },
+    { data: 'complaint_handling_time_end' }
 ]
 });
 
 $('#complaints').DataTable({
+    scrollX:true,
     ajax:{
         url:'getallcomplaints',
         type:'POST',

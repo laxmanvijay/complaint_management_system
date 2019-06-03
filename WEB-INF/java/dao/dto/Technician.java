@@ -18,6 +18,8 @@ public class Technician{
     public int currently_working_application;
     public Time shift_start_time;
     public Time shift_end_time;
+    public Time complaint_handling_time_start;
+    public Time complaint_handling_time_end;
 
     public Technician setDob(String dob){
         Date d = Date.valueOf(dob);

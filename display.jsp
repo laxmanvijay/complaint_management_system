@@ -48,6 +48,9 @@ body,h1,h2,h3,h4,h5,h6 {font-family: "Raleway", Arial, Helvetica, sans-serif}
                 <a href="signout" class="w3-bar-item w3-button" onclick="localStorage.removeItem('jwt')">SignOut</a>
                 <a href="addtechnician.jsp" class="w3-bar-item w3-button">AddTechnician</a>
                 <a href="applicationform.jsp" class="w3-bar-item w3-button">Add Application</a>
+                <a href="displaytechnicians.jsp" class="w3-bar-item w3-button">Display Technicians</a>
+                <a href="generatepdf?data=complaint" class="w3-bar-item w3-button">gen pdf</a>
+                 <a href="generatecsv?data=complaint" class="w3-bar-item w3-button">gen csv</a>
               </div>
               <div class="w3-main" style="margin-left:200px">
               <script>
@@ -105,6 +108,7 @@ body,h1,h2,h3,h4,h5,h6 {font-family: "Raleway", Arial, Helvetica, sans-serif}
         <div id="linechart"></div>
     </div>
     </div>
+    
 <script>
 function logout(){
     console.log("click");
@@ -121,6 +125,7 @@ $.post('getallcomplaints',{'jwt':localStorage.getItem("jwt")},function(data){
     AllComplaintsdata=data;
 
 $('#customers').DataTable({
+    scrollX:true,
     ajax:{
         url:'getallcustomers',  
         dataSrc:'',
@@ -140,6 +145,7 @@ $('#customers').DataTable({
 });
 
 $('#complaints').DataTable({
+    scrollX:true,
     ajax:{
         url:'getallcomplaints',
         type:'POST',

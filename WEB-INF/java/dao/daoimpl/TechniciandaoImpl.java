@@ -300,6 +300,10 @@ public class TechniciandaoImpl implements TechnicianDao {
                 t.role = rs.getString("role");
                 t.salary = rs.getInt("salary");
                 t.specialization = rs.getString("specialization");
+                t.shift_start_time = rs.getTime("shift_start_time");
+                t.shift_end_time = rs.getTime("shift_end_time");
+                t.complaint_handling_time_start = rs.getTime("complaint_handling_time_start");
+                t.complaint_handling_time_end = rs.getTime("complaint_handling_time_end");
                 ls.add(t);
             }
             return ls;
