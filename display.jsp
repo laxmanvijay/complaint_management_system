@@ -17,6 +17,9 @@
 <style>
 body,h1,h2,h3,h4,h5,h6 {font-family: "Raleway", Arial, Helvetica, sans-serif}
 .myLink {display: none}
+#mySidebar{
+font-family: 'Times New Roman', Times, serif
+}
 </style>
 </head>
 <body>
@@ -34,23 +37,26 @@ body,h1,h2,h3,h4,h5,h6 {font-family: "Raleway", Arial, Helvetica, sans-serif}
                         },
                         success:function(data){
                             console.log('success')
-                            if(data!=1){
+                            if(data<1){
                                 location.href='signin.jsp'
+                            }
+                            else{
+                                if(data!=2){
+                                    $("#admin").hide()
+                                }
                             }
                         }
                     })
                 }
             })
         </script>
-        <div class="w3-sidebar w3-bar-block w3-collapse w3-card" style="width:200px;" id="mySidebar">
-                <button class="w3-bar-item w3-button w3-hide-large"
-                onclick="w3_close()">Close &times;</button>
-                <a href="signout" class="w3-bar-item w3-button" onclick="localStorage.removeItem('jwt')">SignOut</a>
-                <a href="addtechnician.jsp" class="w3-bar-item w3-button">AddTechnician</a>
-                <a href="applicationform.jsp" class="w3-bar-item w3-button">Add Application</a>
-                <a href="displaytechnicians.jsp" class="w3-bar-item w3-button">Display Technicians</a>
-                <a href="generatepdf?data=complaint" class="w3-bar-item w3-button">gen pdf</a>
-                 <a href="generatecsv?data=complaint" class="w3-bar-item w3-button">gen csv</a>
+        <div class="w3-sidebar w3-bar-block w3-collapse w3-card w3-black" style="width:200px;" id="mySidebar">
+                 <div id="admin">
+                        <a href="display.jsp" class="w3-bar-item w3-button w3-gray">Complaint Management</a>
+                        <a href="applicationform.jsp" class="w3-bar-item w3-button ">Application Management</a>
+                        <a href="displaytechnicians.jsp" class="w3-bar-item w3-button">Technician Management</a>
+                       
+                </div>
               </div>
               <div class="w3-main" style="margin-left:200px">
               <script>
@@ -62,7 +68,64 @@ body,h1,h2,h3,h4,h5,h6 {font-family: "Raleway", Arial, Helvetica, sans-serif}
                       document.getElementById("mySidebar").style.display = "none";
                     }
                     </script>
-        <h5 class="w3-center w3-text w3-white w3-wide">COMPLAINT MANAGEMENT</h5>
+                    <div class="w3-bar">
+                    <h5 class="w3-bar-item w3-center w3-text w3-white w3-wide">COMPLAINT MANAGEMENT</h5>
+                    <button class="w3-button w3-bar-item w3-blue w3-right w3-round w3-margin-right w3-margin-top" onclick="$('#overlay').toggle()"><i class="fa fa-user fa-fw w3-margin-right w3-text-theme"></i>My Profile</button>
+                     </div>
+                    <div id="overlay">
+                        <div class="w3-card w3-round w3-white">
+                            <div class="w3-container">
+                             <h4 class="w3-center">My Profile</h4>
+                             <p class="w3-center"><img src="https://www.w3schools.com/howto/img_avatar.png" class="w3-circle" style="height:106px;width:106px" alt="Avatar"></p>
+                             <hr>
+                             <p><i class="fa fa-envelope fa-fw w3-margin-right w3-text-theme"></i> <%=session.getAttribute("name")%></p>
+                            
+                             <a href="signout" class="w3-bar-item w3-button w3-right w3-block w3-blue w3-margin" onclick="localStorage.removeItem('jwt')">SignOut</a>
+                            </div>
+                          </div>
+                    </div>
+                    <style>
+                    #overlay {
+                    position: absolute; /* Sit on top of the page content */
+                    display: none; /* Hidden by default */
+                    width: 250px; /* Full width (cover the whole page) */
+                    height: 250px; /* Full height (cover the whole page) */
+                    top: 0.1; 
+                    right:0;
+                    background-color: rgba(175,175,175,1); /* Black background with opacity */
+                    z-index: 2; /* Specify a stack order in case you're using a different order for other elements */
+                    cursor: pointer; /* Add a pointer on hover */
+                    }
+                    </style>
+    <div class="w3-bar w3-blue w3-round w3-margin">
+        <button class="w3-bar-item w3-button tablink w3-black" onclick="openTab(event,'dashboard_tab')">DashBoard</button>
+        <button class="w3-bar-item w3-button tablink" onclick="openTab(event,'complaint_tab')">Complaints</button>
+        <button class="w3-bar-item w3-button tablink" onclick="openTab(event,'customer_tab')">Customers</button>
+        <button class="w3-bar-item w3-button tablink" onclick="openTab(event,'export_tab')">Export</button>
+    </div>     
+      <script>
+      function openTab(evt,name){
+        var i;
+        var x = document.getElementsByClassName("tabs");
+        for (i = 0; i < x.length; i++) {
+            x[i].style.display = "none"; 
+        }
+        tablinks = document.getElementsByClassName("tablink");
+        for (i = 0; i < x.length; i++) {
+            tablinks[i].className = tablinks[i].className.replace(" w3-black", "");
+        }
+        document.getElementById(name).style.display = "block";
+        evt.currentTarget.className += " w3-black";
+      }
+      </script>
+      <div id="dashboard_tab" class="tabs">
+        <div class="w3-card w3-margin" id="type_chart"></div>
+        <div class="w3-card w3-margin">
+            <h3>Number of complaints each day</h3>
+            <div id="linechart"></div>
+        </div>
+        </div>   
+    <div id="customer_tab" class="tabs" style="display:none">
     <div class="w3-card w3-margin">
         <h4>All Customers</h4>
     <table id="customers" class="display w3-table">
@@ -82,6 +145,8 @@ body,h1,h2,h3,h4,h5,h6 {font-family: "Raleway", Arial, Helvetica, sans-serif}
 
     </table>
     </div>
+    </div>
+    <div id="complaint_tab" class="tabs" style="display:none">
     <br>
     <div class="w3-table w3-card w3-margin">
     <h4>All Complaints</h4>
@@ -102,13 +167,55 @@ body,h1,h2,h3,h4,h5,h6 {font-family: "Raleway", Arial, Helvetica, sans-serif}
             </tbody>
         </table>
     </div>
-    <div class="w3-card w3-margin" id="type_chart"></div>
-    <div class="w3-card w3-margin">
-        <h3>Number of complaints each day</h3>
-        <div id="linechart"></div>
     </div>
+    <div id="export_tab" class="tabs" style="display:none">
+        <div class="w3-display-middle w3-card">
+        <div class="w3-row w3-margin w3-border">
+            <div class="w3-col m4 l4">
+                    
+                        <button onclick="download('generatecsv?data=complaint')" class="w3-bar-item w3-text w3-button">Generate csv of all complaints</button>
+                    </div>
+        </div>
+        <div class="w3-row w3-margin w3-border">
+            <div class="w3-col m4 l4">
+                   
+                        <button onclick="download('generatepdf?data=complaint')" class="w3-bar-item w3-text w3-button">Generate pdf of all complaints</button>
+                    </div>
+        </div>
+        <div class="w3-row w3-margin w3-border">
+            <div class="w3-col m4 l4">
+                    
+                        <button onclick="download('generatecsv?data=technician')" class="w3-bar-item w3-text w3-button">Generate csv of all technicians</button>
+                    </div>
+        </div>
+        <div class="w3-row w3-margin w3-border">
+            <div class="w3-col m4 l4">
+                   
+                        <button onclick="download('generatepdf?data=technician')" class="w3-bar-item w3-text w3-button">Generate pdf of all technicians</button>
+                    </div>
+        </div>
+        </div>
+               
     </div>
     
+    </div>
+    <script>
+        function download(url){
+            var req = new XMLHttpRequest();
+            req.open("GET", url, true);
+            req.responseType = "blob";
+            req.onload = function (event) {
+                var blob = req.response;
+                var fileName = req.getResponseHeader("Content-Disposition").split("=")[1]
+                var link=document.createElement('a');
+                link.href=window.URL.createObjectURL(blob);
+                link.download=fileName;
+                link.click();
+            };
+
+            req.send();
+        }
+    </script>
 <script>
 function logout(){
     console.log("click");

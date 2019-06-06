@@ -84,7 +84,7 @@ public class Complaint extends HttpServlet{
         LocalTime time = LocalTime.parse(time_input);
         Duration d = Duration.between(start, time);
         Duration d2 = Duration.between(end, time);
-        if(d.isNegative()&& !d2.isNegative()){
+        if(!d.isNegative()&& d2.isNegative()){
             return true;
         }
         return false;

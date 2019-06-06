@@ -173,6 +173,7 @@ public class ComplaintDtoDaoImpl implements ComplaintDtoDao{
     }
     }
 
+
     public int insert(ComplaintDto c){
         
         try{

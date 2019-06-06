@@ -49,7 +49,54 @@ body,h1,h2,h3,h4,h5,h6,label {font-family: "Times New Roman", Arial, Helvetica, 
                 toastr.success('Success,Added a new Technician')
                 </script>
                 <% } %>
-        <h5 class="w3-center w3-text w3-white w3-wide">COMPLAINT MANAGEMENT</h5>
+                <div class="w3-sidebar w3-bar-block w3-collapse w3-card w3-black" style="width:200px;" id="mySidebar">
+                        <div id="admin">
+                       <a href="addtechnician.jsp" class="w3-bar-item w3-button">AddTechnician</a>
+                       <a href="applicationform.jsp" class="w3-bar-item w3-button">Add Application</a>
+                       <a href="displaytechnicians.jsp" class="w3-bar-item w3-button">Display Technicians</a>
+                       
+                        ${session.getAttribute("name")}
+                       </div>
+                     </div>
+                     <div class="w3-main" style="margin-left:200px">
+                     <script>
+                           function w3_open() {
+                             document.getElementById("mySidebar").style.display = "block";
+                           }
+                           
+                           function w3_close() {
+                             document.getElementById("mySidebar").style.display = "none";
+                           }
+                           </script>
+                           <div class="w3-bar">
+                           <h5 class="w3-bar-item w3-center w3-text w3-white w3-wide">COMPLAINT MANAGEMENT</h5>
+                           <button class="w3-button w3-bar-item w3-blue w3-right w3-round w3-margin-right w3-margin-top" onclick="$('#overlay').toggle()"><i class="fa fa-user fa-fw w3-margin-right w3-text-theme"></i>My Profile</button>
+                            </div>
+                           <div id="overlay">
+                               <div class="w3-card w3-round w3-white">
+                                   <div class="w3-container">
+                                    <h4 class="w3-center">My Profile</h4>
+                                    <p class="w3-center"><img src="https://www.w3schools.com/howto/img_avatar.png" class="w3-circle" style="height:106px;width:106px" alt="Avatar"></p>
+                                    <hr>
+                                    <p><i class="fa fa-envelope fa-fw w3-margin-right w3-text-theme"></i> <%=session.getAttribute("name")%></p>
+                                   
+                                    <a href="signout" class="w3-bar-item w3-button w3-right w3-block w3-blue w3-margin" onclick="localStorage.removeItem('jwt')">SignOut</a>
+                                   </div>
+                                 </div>
+                           </div>
+                           <style>
+                           #overlay {
+                           position: absolute; /* Sit on top of the page content */
+                           display: none; /* Hidden by default */
+                           width: 250px; /* Full width (cover the whole page) */
+                           height: 250px; /* Full height (cover the whole page) */
+                           top: 0.1; 
+                           right:0;
+                           background-color: rgba(175,175,175,1); /* Black background with opacity */
+                           z-index: 2; /* Specify a stack order in case you're using a different order for other elements */
+                           cursor: pointer; /* Add a pointer on hover */
+                           }
+                           </style>
     <div id="form" class="bg-contact2" style="background-image: url('mountain.jpg');">
         <div class="container-contact2">
             <div class="wrap-contact2">

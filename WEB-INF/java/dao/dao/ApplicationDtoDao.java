@@ -11,4 +11,5 @@ public interface ApplicationDtoDao{
     String getAppNameFromAppId(int id);
     List<Integer> getAppIdByUserId(int userId);
     List<Integer> getVersionOfApp(String name);
+    List<HashMap<String,String>> getAllApplications();
 }

@@ -16,6 +16,29 @@ public class ApplicationDtoDaoImpl implements ApplicationDtoDao{
         cdao = new CustomerDaoImpl();
     }
 
+    public List<HashMap<String,String>> getAllApplications(){
+        try{
+        String sql = "select app_name,description,application_details.app_id,version from application_details join application_version on application_details.app_id=application_version.app_id";
+        PreparedStatement ps = con.prepareStatement(sql);
+        ResultSet rs = ps.executeQuery();
+        List<HashMap<String,String>> ls = new ArrayList<>();
+        while(rs.next()){
+            HashMap<String,String> hm = new HashMap<>();
+            hm.put("id",String.valueOf(rs.getInt("app_id")));
+            hm.put("name",rs.getString("app_name"));
+            hm.put("description",rs.getString("description"));
+            hm.put("version",String.valueOf(rs.getInt("version")));
+            ls.add(hm);
+        }
+        return ls;
+        }
+        catch(Exception e){
+            e.printStackTrace();
+            return null;
+        }
+    
+    }
+
     public int getAppIdByName(String name){
         try{
         String sql = "select app_id from application_details where app_name = ?";

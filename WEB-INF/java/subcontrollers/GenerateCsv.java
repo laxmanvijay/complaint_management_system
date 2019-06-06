@@ -44,7 +44,7 @@ public class GenerateCsv extends HttpServlet{
             jasperPrint = JasperFillManager.fillReport(jasperReport, new HashMap<String,Object>(), new DBConnection().getConnection());
             response.setHeader("Content-Disposition", "attachment;filename=report.csv");
             response.setContentType("application/octet-stream");
-            response.setContentLength(4096);
+            //response.setContentLength(4096);
             outputStream = response.getOutputStream();
             JRCsvExporter exporter = new JRCsvExporter();
             exporter.setParameter(JRExporterParameter.JASPER_PRINT, jasperPrint);

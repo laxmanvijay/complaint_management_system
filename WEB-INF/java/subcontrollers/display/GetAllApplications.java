@@ -14,13 +14,14 @@ import dao.dto.*;
 
 
 
-@WebServlet("/getallcomplaints")
-public class GetAllComplaints extends HttpServlet{
+@WebServlet("/getallapplications")
+public class GetAllApplications extends HttpServlet{
     public void doPost(HttpServletRequest request,HttpServletResponse response) throws IOException,ServletException{
         PrintWriter out = response.getWriter();
         TechnicianDao tdao = new TechniciandaoImpl();
         HttpSession session = request.getSession(false);
-        ComplaintDtoDao complaintdao = new ComplaintDtoDaoImpl();
+        
+        ApplicationDtoDao adao = new ApplicationDtoDaoImpl();
         String json;
         String jwt = request.getParameter("jwt");
         try{
@@ -34,14 +35,14 @@ public class GetAllComplaints extends HttpServlet{
         if(tdao.verifyEmailAndPassword(email, password)>0)
             {
             if(tdao.checkIsAdmin(email)){
-                json = gson.toJson(complaintdao.getAllComplaints());
+                json = gson.toJson(adao.getAllApplications());
             }
             else{
-                json = gson.toJson(complaintdao.getComplaintsForTechnicians((String)session.getAttribute("name")));
+                json=null;
             }
         }
         else{
-            json = gson.toJson(new CombinedComplaintInfo());
+            json=null;
         }
         response.setContentType("application/json");
         response.setCharacterEncoding("UTF-8");

@@ -32,7 +32,12 @@ public class VerifyEmailAndPassword extends HttpServlet{
             String password = new String(decrypt).split(" ")[1]; // value stored in email+" "+password
             
             if(tdao.verifyEmailAndPassword(email, password)>0){
-                json = gson.toJson(1);
+                if(tdao.checkIsAdmin(email)){
+                    json = gson.toJson(2);
+                }
+                else{
+                    json = gson.toJson(1);
+                }
             }
             else{
                 json = gson.toJson(0);
